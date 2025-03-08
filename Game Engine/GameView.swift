@@ -67,7 +67,7 @@ class GameView: MTKView {
         // Set the render pipeline state of the render command encoder.
         renderCommandEncoder?.setRenderPipelineState(self.RenderPipeLineState)
         
-        // TODO: SEND INFO TO RENDERCOMMANDENCODER HERE
+        // TODO: SEND INFO TO RENDER_COMMAND_ENCODER HERE
         
         renderCommandEncoder?.endEncoding()
         
