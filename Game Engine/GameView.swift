@@ -4,15 +4,17 @@ import Cocoa
 
 class GameView: MTKView {
     
+    // Vertex structure
+    struct Vertex {
+        var position: SIMD3<Float>
+        var colour: SIMD4<Float>
+    }
+    
     var commandQueue: MTLCommandQueue!
     var RenderPipeLineState: MTLRenderPipelineState!
     
-    // Set out a triangle
-    let vertices: [SIMD3<Float>] = [
-        SIMD3<Float>(0, 1, 0),    // top middle
-        SIMD3<Float>(-1,-1,0),    // bottom left
-        SIMD3<Float>(1,-1,0)      // bottom right
-    ]
+    // Array of vertices that is populated by function: createVertices()
+    var vertices: [Vertex]!
     
     // Create gpu accessible memory
     var vertexBuffer: MTLBuffer!
@@ -39,13 +41,25 @@ class GameView: MTKView {
         // Create a render pipeline state
         createRenderPipelineState()
         
+        // Create vertex data
+        createVertices()
+        
         // Create buffers of gpu accessible memory
         createBuffers()
     }
     
+    
+    func createVertices() {
+        self.vertices = [
+            Vertex(position: SIMD3<Float>(0, 1, 0), colour: SIMD4<Float>(1, 0, 0, 1)),
+            Vertex(position: SIMD3<Float>(-1, -1, 0), colour: SIMD4<Float>(0, 1, 0, 1)),
+            Vertex(position: SIMD3<Float>(1, -1, 0), colour: SIMD4<Float>(0, 0, 1, 1))
+        ]
+    }
+    
+    
     func createBuffers() {
-        
-        self.vertexBuffer = self.device?.makeBuffer(bytes: self.vertices, length: MemoryLayout<SIMD3<Float>>.stride * self.vertices.count, options: [])
+        self.vertexBuffer = self.device?.makeBuffer(bytes: self.vertices, length: MemoryLayout<Vertex>.stride * self.vertices.count, options: [])
     }
     
     func createRenderPipelineState() {
