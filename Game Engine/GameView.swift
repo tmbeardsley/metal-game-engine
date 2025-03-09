@@ -7,6 +7,18 @@ class GameView: MTKView {
     var commandQueue: MTLCommandQueue!
     var RenderPipeLineState: MTLRenderPipelineState!
     
+    // Set out a triangle
+    let vertices: [SIMD3<Float>] = [
+        SIMD3<Float>(0, 1, 0),    // top middle
+        SIMD3<Float>(-1,-1,0),    // bottom left
+        SIMD3<Float>(1,-1,0)      // bottom right
+    ]
+    
+    // Create gpu accessible memory
+    var vertexBuffer: MTLBuffer!
+    
+    
+    
     // Constructor
     required init(coder: NSCoder) {
         
@@ -26,8 +38,15 @@ class GameView: MTKView {
         
         // Create a render pipeline state
         createRenderPipelineState()
+        
+        // Create buffers of gpu accessible memory
+        createBuffers()
     }
     
+    func createBuffers() {
+        
+        self.vertexBuffer = self.device?.makeBuffer(bytes: self.vertices, length: MemoryLayout<SIMD3<Float>>.stride * self.vertices.count, options: [])
+    }
     
     func createRenderPipelineState() {
 
@@ -67,7 +86,9 @@ class GameView: MTKView {
         // Set the render pipeline state of the render command encoder.
         renderCommandEncoder?.setRenderPipelineState(self.RenderPipeLineState)
         
-        // TODO: SEND INFO TO RENDER_COMMAND_ENCODER HERE
+        // Set the location of the data in device space. Specify that a triangle primitive should be drawn for every 3 vertices
+        renderCommandEncoder?.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
+        renderCommandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: self.vertices.count)
         
         renderCommandEncoder?.endEncoding()
         
