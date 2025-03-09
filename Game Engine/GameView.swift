@@ -4,11 +4,11 @@ import Cocoa
 
 class GameView: MTKView {
     
-    // Vertex structure
-    struct Vertex {
-        var position: SIMD3<Float>
-        var colour: SIMD4<Float>
-    }
+//    // Vertex structure
+//    struct Vertex {
+//        var position: SIMD3<Float>
+//        var colour: SIMD4<Float>
+//    }
     
     var commandQueue: MTLCommandQueue!
     var RenderPipeLineState: MTLRenderPipelineState!
@@ -59,8 +59,9 @@ class GameView: MTKView {
     
     
     func createBuffers() {
-        self.vertexBuffer = self.device?.makeBuffer(bytes: self.vertices, length: MemoryLayout<Vertex>.stride * self.vertices.count, options: [])
+        self.vertexBuffer = self.device?.makeBuffer(bytes: self.vertices, length: Vertex.stride(self.vertices.count), options: [])
     }
+    
     
     func createRenderPipelineState() {
 
@@ -70,10 +71,31 @@ class GameView: MTKView {
         let vertexFunction = library?.makeFunction(name: "basic_vertex_shader")
         let fragmentFunction = library?.makeFunction(name: "basic_fragment_shader")
         
+        
+        // Create a vertexDescriptor for the renderPipelineState.
+        // Allows us to pass individual vertices into the vertexFunction (instead of an array of them as previously).
+        // Attributes [0] and [1] are labelled in the VertexIn struct in the metal file.
+        let vertexDescriptor = MTLVertexDescriptor()
+        
+        // Position attribute in Vertex struct
+        vertexDescriptor.attributes[0].format = .float3     // Data type for position
+        vertexDescriptor.attributes[0].bufferIndex = 0      // Index of buffer storing Vertex data in the buffer memory table
+        vertexDescriptor.attributes[0].offset = 0           // Index of the position data in the struct (position is first, so = 0)
+        
+        // Colour attribute in the Vertex struct
+        vertexDescriptor.attributes[1].format = .float4     // Data type for colour
+        vertexDescriptor.attributes[1].bufferIndex = 0      // Index of buffer storing Vertex data in the buffer memory table
+        vertexDescriptor.attributes[1].offset = SIMD3<Float>.size() // In a Vertex struct, colour (float4) comes after the position (float3)
+        
+        // Amount of memory taken by successive Vertex structures in the buffer (i.e., float3 + float4 per Vertex).
+        vertexDescriptor.layouts[0].stride = Vertex.stride()
+        
+        
         let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
         renderPipelineDescriptor.vertexFunction = vertexFunction                    // How vertices are transformed
         renderPipelineDescriptor.fragmentFunction = fragmentFunction                // Determines the colour of fragments given texture info from the vertexFunction
         renderPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        renderPipelineDescriptor.vertexDescriptor = vertexDescriptor
         
         // Create a render pipeline state using the render pipeline descriptor
         do {
