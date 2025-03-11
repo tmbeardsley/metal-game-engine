@@ -9,7 +9,7 @@ class RenderPipelineStateLibrary {
     
     private static var renderPipelineStates: [RenderPipelineStateTypes: RenderPipelineState] = [:]
     
-    public static func initialize() {
+    public static func Initialize() {
         createDefaultRenderPipelineStates()
     }
     

@@ -16,7 +16,7 @@ class ShaderLibrary {
     private static var vertexShaders:   [VertexShaderTypes:   Shader] = [:]     // key:value pairs are VertexShaderTypes: Shader
     private static var fragmentShaders: [FragmentShaderTypes: Shader] = [:]
     
-    public static func initialize() {
+    public static func Initialize() {
         DefaultLibrary = Engine.Device.makeDefaultLibrary()
         self.createDefaultShaders()
     }

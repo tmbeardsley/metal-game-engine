@@ -15,13 +15,15 @@ class Engine {
         self.CommandQueue = device.makeCommandQueue()
         
         // Initialise the shader library to make reusable vertex and fragment shaders
-        ShaderLibrary.initialize()
+        ShaderLibrary.Initialize()
         
         // Initialise the vertex descriptor library to make reusable vertex and fragment shaders
-        VertexDescriptorLibrary.initialize()
+        VertexDescriptorLibrary.Initialize()
         
-        RenderPipelineDescriptorLibrary.initialize()
+        RenderPipelineDescriptorLibrary.Initialize()
         
-        RenderPipelineStateLibrary.initialize()
+        RenderPipelineStateLibrary.Initialize()
+        
+        MeshLibrary.Initialize()
     }
 }
