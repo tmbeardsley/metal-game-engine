@@ -15,15 +15,21 @@ struct RasterizerData {
     float4 colour;                      // Will be interpolated by the rasterizer to each pixel value
 };
 
+struct ModelConstants {
+    float4x4 modelMatrix;
+};
 
 
 // Having added a MTLVertexDescriptor() to our MTLRenderPipelineDescriptor(),
 // stage_in specifies that each vertex (in the buffer) is processed by a different thread without the need
 // for passing in an array of them and accessing them by thread id. Tidies up the code.
-vertex RasterizerData basic_vertex_shader(const VertexIn vIn    [[ stage_in ]]) {
+vertex RasterizerData basic_vertex_shader(const VertexIn vIn    [[ stage_in ]],
+                                          constant ModelConstants &modelConstants    [[buffer(1)]]) {
     RasterizerData rd;
     
-    rd.position = float4(vIn.position, 1);
+    // Apply the transformation matrix to the coordinated of the current vertex
+    rd.position = modelConstants.modelMatrix * float4(vIn.position, 1);
+    
     rd.colour = vIn.colour;
     
     return rd;

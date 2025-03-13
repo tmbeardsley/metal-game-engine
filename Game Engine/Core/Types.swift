@@ -21,10 +21,15 @@ extension sizeable {
     }
 }
 
+extension Float: sizeable {}
 extension SIMD3: sizeable {}
 
 // Vertex structure
 struct Vertex : sizeable {
     var position:   SIMD3<Float>
     var colour:     SIMD4<Float>
+}
+
+struct ModelConstants: sizeable {
+    var modelMatrix = matrix_identity_float4x4
 }

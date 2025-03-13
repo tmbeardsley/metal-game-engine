@@ -28,6 +28,8 @@ extension Renderer: MTKViewDelegate {
         // renderPassDescriptor contains a lot of pixel information and buffer storage information for our view for the next drawable.
         let renderCommandEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
         
+        self.player.update(1.0 / Float(view.preferredFramesPerSecond))
+        
         // Render the game object
         self.player.render(renderCommandEncoder: renderCommandEncoder!)
         

@@ -81,13 +81,13 @@ class Triangle_CustomMesh: CustomMesh {
 class Quad_CustomMesh: CustomMesh {
     override func createVertices() {
         self.vertices = [
-            Vertex(position: SIMD3<Float>( 0.5,  0.5, 0), colour: SIMD4<Float>(1, 0, 0, 1)),      // top right
-            Vertex(position: SIMD3<Float>(-0.5,  0.5, 0), colour: SIMD4<Float>(0, 1, 0, 1)),     // top left
-            Vertex(position: SIMD3<Float>(-0.5, -0.5, 0), colour: SIMD4<Float>(0, 0, 1, 1)),     // bottom left
+            Vertex(position: SIMD3<Float>( 1.0,  1.0, 0), colour: SIMD4<Float>(1, 0, 0, 1)),      // top right
+            Vertex(position: SIMD3<Float>(-1.0,  1.0, 0), colour: SIMD4<Float>(0, 1, 0, 1)),     // top left
+            Vertex(position: SIMD3<Float>(-1.0, -1.0, 0), colour: SIMD4<Float>(0, 0, 1, 1)),     // bottom left
             
-            Vertex(position: SIMD3<Float>( 0.5,  0.5, 0), colour: SIMD4<Float>(1, 0, 0, 1)),      // top right
-            Vertex(position: SIMD3<Float>(-0.5, -0.5, 0), colour: SIMD4<Float>(0, 0, 1, 1)),    // bottom left
-            Vertex(position: SIMD3<Float>( 0.5, -0.5, 0), colour: SIMD4<Float>(1, 0, 1, 1))      // bottom right
+            Vertex(position: SIMD3<Float>( 1.0,  1.0, 0), colour: SIMD4<Float>(1, 0, 0, 1)),      // top right
+            Vertex(position: SIMD3<Float>(-1.0, -1.0, 0), colour: SIMD4<Float>(0, 0, 1, 1)),    // bottom left
+            Vertex(position: SIMD3<Float>( 1.0, -1.0, 0), colour: SIMD4<Float>(1, 0, 1, 1))      // bottom right
         ]
     }
 
